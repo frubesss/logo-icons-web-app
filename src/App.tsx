@@ -10,7 +10,7 @@ function App() {
     queryKey: ["logoIcons"],
     queryFn: async (): Promise<string[]> => {
       const response = await fetch(
-        `https://logo-icons-lookup-api.deno.dev/all_logo_icons`,
+        "https://logo-icons-lookup-api.deno.dev/all_logo_icons",
       );
       return await response.json();
     },
@@ -52,7 +52,7 @@ function App() {
           type="search"
           placeholder={`Search ${query.data?.length} icons...`}
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div
           style={{
