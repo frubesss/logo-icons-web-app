@@ -7,7 +7,7 @@ import SearchIcon from "./SearchIcon.svg";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const query = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["logoIcons"],
     queryFn: async (): Promise<string[]> => {
       const response = await fetch(
@@ -17,7 +17,7 @@ function App() {
     },
   });
 
-  const filteredData = query.data?.filter((logo) =>
+  const filteredData = data?.filter((logo) =>
     logo.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
@@ -27,12 +27,7 @@ function App() {
         <a href="https://github.com/frubesss/logo-icons-web-app">Github</a>
       </header>
       <main>
-        <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "48px",
-          }}
-        >
+        <h1 style={{ textAlign: "center", marginBottom: "48px" }}>
           Logo Icons
         </h1>
         <input
@@ -47,20 +42,26 @@ function App() {
               "0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
           }}
           type="search"
-          placeholder={`Search ${query.data?.length ?? "100"} icons...`}
+          placeholder={`Search ${data?.length ?? "100"} icons...`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        {query.isPending ? <div>Loading logo icons...</div> : null}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-        >
-          {filteredData?.map((logo) => <LogoIcon logo={logo} key={logo} />)}
-        </div>
+
+        {isPending ? (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            Loading logo icons...
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            {filteredData?.map((logo) => <LogoIcon logo={logo} key={logo} />)}
+          </div>
+        )}
       </main>
     </div>
   );
