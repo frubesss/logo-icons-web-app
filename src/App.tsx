@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { LogoIcon } from "./LogoIcon.tsx";
+import SearchIcon from "./SearchIcon.svg";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,14 +21,10 @@ function App() {
     logo.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  if (query.isPending) {
-    return <div>Loading logo icons...</div>;
-  }
-
   return (
     <div>
       <header>
-        <a href="https://github.com/frubesss/financial-logos-app">Github</a>
+        <a href="https://github.com/frubesss/logo-icons-web-app">Github</a>
       </header>
       <main>
         <h1
@@ -40,7 +37,7 @@ function App() {
         </h1>
         <input
           style={{
-            background: "url('/SearchIcon.svg') no-repeat 10px #fff",
+            background: `url('${SearchIcon}') no-repeat 10px #fff`,
             padding: "16px 8px 16px 40px",
             width: "100%",
             marginBottom: "40px",
@@ -50,10 +47,11 @@ function App() {
               "0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
           }}
           type="search"
-          placeholder={`Search ${query.data?.length} icons...`}
+          placeholder={`Search ${query.data?.length ?? "100"} icons...`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        {query.isPending ? <div>Loading logo icons...</div> : null}
         <div
           style={{
             display: "flex",
